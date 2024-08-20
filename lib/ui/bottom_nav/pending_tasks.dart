@@ -61,17 +61,14 @@ class _PendingTasksState extends State<PendingTasks> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Pending:  ', style: cardTitleStyle),
+                Text('Pending Task Count: ', style: cardTitleStyle),
                 Obx(() {
                   final pendingTasks = taskController.taskList
                       .where((task) => task.isCompleted == 0)
                       .toList();
                   return Text(
                     '${pendingTasks.length}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
+                    style: cardTitleStyle,
                   );
                 }),
               ],

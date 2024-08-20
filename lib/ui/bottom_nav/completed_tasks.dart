@@ -50,10 +50,7 @@ class _CompletedTasksState extends State<CompletedTasks> {
                       .toList();
                   return Text(
                     '${completedTasks.length}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
+                    style: cardTitleStyle,
                   );
                 }),
               ],

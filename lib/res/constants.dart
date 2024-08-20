@@ -1,12 +1,11 @@
 import'package:flutter/material.dart';
-
 import 'colors.dart';
 
 EdgeInsets padding = const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16);
 
 TextStyle cardTitleStyle = const TextStyle(
 color: Colors.white,
-fontSize: 16,
+fontSize: 20,
 fontWeight: FontWeight.bold,
 );
 
