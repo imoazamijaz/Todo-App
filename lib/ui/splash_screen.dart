@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   Animation<double>? _fadeAnimation;
   Animation<Offset>? _slideAnimation;
 
-  Color _iconColor = MyColors.color;
+  final Color _iconColor = MyColors.color;
 
   @override
   void initState() {
@@ -46,13 +46,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       curve: Curves.easeInOut,
     ));
 
-    _controller!.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        setState(() {
-          _iconColor = Colors.green;
-        });
-      }
-    });
 
     _controller!.forward();
 
