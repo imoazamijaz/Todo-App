@@ -6,10 +6,10 @@ import 'package:todo_app/res/components/my_text_field.dart';
 import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/res/constants.dart';
 import 'package:todo_app/res/size_box_extension.dart';
-import 'package:todo_app/ui/bottom_nav/pending_tasks.dart';
 import '../controller/task_controller.dart';
 import '../model/task_model.dart';
 import '../res/utils/utils.dart';
+import 'bottom_nav/bottom_nav.dart';
 
 class EditTaskBottomSheet extends StatefulWidget {
   final Task task;
@@ -89,7 +89,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
     );
     await taskController.updateTask(updatedTask);
 
-    Get.offAll(const PendingTasks());
+    Get.offAll(const BottomNav());
     Utils.successSnackBar('Task Updated');
 
   }
