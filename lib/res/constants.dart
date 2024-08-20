@@ -10,6 +10,17 @@ fontSize: 16,
 fontWeight: FontWeight.bold,
 );
 
+TextStyle subStyle = const TextStyle(
+  color: MyColors.color,
+  fontSize: 15,
+  fontWeight: FontWeight.bold,
+);
+
+TextStyle headerStyle = const TextStyle(
+  fontSize: 22,
+  fontWeight: FontWeight.bold,
+);
+
 final decoration  = BoxDecoration(
   color: MyColors.color,
   borderRadius: BorderRadius.circular(12),

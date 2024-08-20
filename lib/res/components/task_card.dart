@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/res/constants.dart';
 import 'package:todo_app/res/size_box_extension.dart';
 

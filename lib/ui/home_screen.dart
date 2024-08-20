@@ -124,8 +124,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               width: 15,
                                               decoration: BoxDecoration(
                                                   color: task.isCompleted == 1
-                                                      ? Colors.green
-                                                      : Colors.yellow,
+                                                      ? Colors.green.shade700
+                                                      : Colors.yellow.shade700,
                                                   shape: BoxShape.circle),
                                             )
                                           ],

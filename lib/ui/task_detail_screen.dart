@@ -31,17 +31,19 @@ class TaskDetailScreen extends StatelessWidget {
       );
 
       if (updatedTask != null) {
-
         taskController.updateTask(updatedTask);
         Utils.successSnackBar('Task Updated');
-
       }
     }
+
     return Scaffold(
       backgroundColor: MyColors.scaffoldSColor,
       appBar: AppBar(
         backgroundColor: MyColors.scaffoldSColor,
-        title: const Text('Task Details'),
+        title: const Text(
+          'Task Details',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -49,38 +51,60 @@ class TaskDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                 Text(
+                  'Status',
+                  style: headerStyle,
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        width: 2,
+                        color: task.isCompleted == 1
+                            ? Colors.green.shade700
+                            : Colors.yellow.shade700,
+                      )),
+                  child: Text(
+                    task.isCompleted == 1 ? 'Completed' : 'Pending',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: MyColors.color,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            12.kH,
+            column(title: 'Name', subTitle: task.title),
+            column(title: 'Date', subTitle: task.date),
+            column(title: 'Time', subTitle: task.time),
+            12.kH,
             Text(
-              task.title,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              'Description',
+              style: headerStyle,
             ),
             8.kH,
-            Text(
-              task.isCompleted == 1 ? 'Status: Completed' : 'Status: Pending',
-              style: TextStyle(
-                fontSize: 18,
-                color: task.isCompleted == 1 ? Colors.green : Colors.red,
-                fontWeight: FontWeight.w500,
+            Container(
+              height: Get.height * 0.15,
+              width: Get.width,
+              padding: padding,
+              decoration: decoration.copyWith(color: Colors.white),
+              child: SingleChildScrollView(
+                child: Text(
+                  task.description,
+                  style: const TextStyle(
+                    overflow: TextOverflow.visible,
+                  ),
+                ),
               ),
             ),
-            8.kH,
-            Text(
-              'Date: ${task.date}',
-              style: const TextStyle(fontSize: 18),
-            ),
-            8.kH,
-            Text(
-              'Time: ${task.time}',
-              style: const TextStyle(fontSize: 18),
-            ),
-            8.kH,
-            Text(
-              'Description: ${task.description}',
-              style: const TextStyle(fontSize: 18),
-            ),
-            16.kH,
-            const Divider(
-              color: Colors.white,
-            ),
+
             const Spacer(),
             MyButton(
               onTap: showEditDraggableSheet,
@@ -95,7 +119,8 @@ class TaskDetailScreen extends StatelessWidget {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: const Text('Confirm Delete'),
-                      content: const Text('Are you sure you want to delete this task?'),
+                      content: const Text(
+                          'Are you sure you want to delete this task?'),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(false),
@@ -117,13 +142,39 @@ class TaskDetailScreen extends StatelessWidget {
               },
               color: MyColors.scaffoldSColor,
               textColor: MyColors.color,
-              borderColor:  MyColors.color,
+              borderColor: MyColors.color,
               text: 'Delete',
               isLoading: false,
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget column({required String title, required String subTitle}) {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title),
+          Text(
+            subTitle,
+            style: subStyle,
+          ),
+          const Divider(
+            color: Colors.white,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget myDivider() {
+    return const Divider(
+      color: Colors.white,
     );
   }
 }
