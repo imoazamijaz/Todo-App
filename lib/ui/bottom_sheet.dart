@@ -6,7 +6,7 @@ import 'package:todo_app/res/components/my_text_field.dart';
 import 'package:todo_app/res/colors.dart';
 import 'package:todo_app/res/constants.dart';
 import 'package:todo_app/res/size_box_extension.dart';
-import 'package:todo_app/ui/home_screen.dart';
+import 'package:todo_app/ui/bottom_nav/pending_tasks.dart';
 import '../controller/task_controller.dart';
 import '../model/task_model.dart';
 import '../res/utils/utils.dart';
@@ -17,7 +17,7 @@ class EditTaskBottomSheet extends StatefulWidget {
   const EditTaskBottomSheet({super.key, required this.task});
 
   @override
-  _EditTaskBottomSheetState createState() => _EditTaskBottomSheetState();
+  State<EditTaskBottomSheet> createState() => _EditTaskBottomSheetState();
 }
 
 class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
@@ -89,7 +89,7 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet> {
     );
     await taskController.updateTask(updatedTask);
 
-    Get.offAll(const HomeScreen());
+    Get.offAll(const PendingTasks());
     Utils.successSnackBar('Task Updated');
 
   }

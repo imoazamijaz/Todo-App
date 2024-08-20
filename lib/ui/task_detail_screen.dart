@@ -8,7 +8,7 @@ import '../res/components/my_button.dart';
 import '../res/utils/utils.dart';
 import '../res/size_box_extension.dart';
 import 'bottom_sheet.dart';
-import 'home_screen.dart';
+import 'bottom_nav/pending_tasks.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   final Task task;
@@ -140,7 +140,7 @@ class TaskDetailScreen extends StatelessWidget {
                 );
                 if (confirm == true) {
                   await taskController.deleteTask(task.id!);
-                  Get.offAll(const HomeScreen());
+                  Get.offAll(const PendingTasks());
                   Utils.successSnackBar('Task Deleted');
                 }
               },

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:todo_app/ui/home_screen.dart';
-import '../../res/colors.dart';
+import 'package:todo_app/ui/bottom_nav/pending_tasks.dart';
+import '../../../res/colors.dart';
 import 'completed_tasks.dart';
 
 class BottomNav extends StatefulWidget {
@@ -59,7 +59,7 @@ class _BottomNavState extends State<BottomNav> {
           controller: _pageController,
           children: const [
             // Home Screen
-            HomeScreen(),
+            PendingTasks(),
             // Profile Screen
             CompletedTasks(),
           ],

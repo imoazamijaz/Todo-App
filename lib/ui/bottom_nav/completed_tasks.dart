@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/res/size_box_extension.dart';
-import '../controller/task_controller.dart';
-import '../res/colors.dart';
-import '../res/constants.dart';
-import 'task_detail_screen.dart';
+import '../../controller/task_controller.dart';
+import '../../res/colors.dart';
+import '../../res/constants.dart';
+import '../task_detail_screen.dart';
 
 class CompletedTasks extends StatefulWidget {
   const CompletedTasks({super.key});
@@ -88,9 +88,9 @@ class _CompletedTasksState extends State<CompletedTasks> {
                                       children: [
                                         Row(
                                           children: [
-                                            Text(
+                                            const Text(
                                               'Completed',
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500,
                                               ),

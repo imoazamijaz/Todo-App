@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:get/route_manager.dart';
 import 'package:todo_app/res/colors.dart';
-import 'package:todo_app/ui/bottom_nav.dart';
-
-import 'home_screen.dart';
+import 'package:todo_app/ui/bottom_nav/bottom_nav.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

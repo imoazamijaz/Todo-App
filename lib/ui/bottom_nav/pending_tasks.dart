@@ -4,19 +4,19 @@ import 'package:todo_app/res/components/my_button.dart';
 import 'package:todo_app/res/constants.dart';
 import 'package:todo_app/res/size_box_extension.dart';
 import 'package:todo_app/ui/task_detail_screen.dart';
-import '../controller/task_controller.dart';
-import '../model/task_model.dart';
-import '../res/colors.dart';
-import 'add_task_screen.dart';
+import '../../controller/task_controller.dart';
+import '../../model/task_model.dart';
+import '../../res/colors.dart';
+import '../add_task_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class PendingTasks extends StatefulWidget {
+  const PendingTasks({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<PendingTasks> createState() => _PendingTasksState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _PendingTasksState extends State<PendingTasks> {
   final TaskController taskController = Get.put(TaskController());
 
   void _confirmCompleteTask(Task task) {
