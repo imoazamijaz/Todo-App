@@ -23,44 +23,22 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
 
-  DateTime? _selectedDate;
-  TimeOfDay? _selectedTime;
+  @override
+  void initState() {
+    super.initState();
+    // Initialize with the current date and time
+    DateTime now = DateTime.now();
+    _dateController.text = DateFormat('yyyy-MM-dd').format(now);
+    _timeController.text = DateFormat('hh:mm a').format(now);
+  }
 
   final TaskController taskController = Get.find();
 
   RxBool isLoading = false.obs;
 
-  void _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-        _dateController.text = DateFormat('yyyy-MM-dd').format(picked);
-      });
-    }
-  }
-
-  void _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _selectedTime ?? TimeOfDay.now(),
-    );
-    if (picked != null && picked != _selectedTime) {
-      setState(() {
-        _selectedTime = picked;
-        _timeController.text = picked.format(context);
-      });
-    }
-  }
-
   void _saveTask() async {
-    if (_taskTitleController.text.isEmpty || _dateController.text.isEmpty || _timeController.text.isEmpty) {
-      Utils.errorSnackBar('Please fill in all fields');
+    if (_taskTitleController.text.isEmpty) {
+      Utils.errorSnackBar('Please fill in the task title');
       return;
     }
 
@@ -119,17 +97,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               CustomTextField(
                 controller: _dateController,
                 label: 'Date',
-                readOnly: true,
-                onTap: () => _selectDate(context),
-                suffixIcon: const Icon(Icons.calendar_month,color: MyColors.color),
+                readOnly: true, // Prevents editing
+                // No onTap function, so the date can't be changed
+                suffixIcon: const Icon(Icons.calendar_month, color: MyColors.color),
               ),
               20.kH,
               CustomTextField(
                 controller: _timeController,
                 label: 'Time',
-                readOnly: true,
-                onTap: () => _selectTime(context),
-                suffixIcon: const Icon(Icons.access_time,color: MyColors.color),
+                readOnly: true, // Prevents editing
+                // No onTap function, so the time can't be changed
+                suffixIcon: const Icon(Icons.access_time, color: MyColors.color),
               ),
               20.kH,
               Obx(() => MyButton(

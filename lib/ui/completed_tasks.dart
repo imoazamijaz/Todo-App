@@ -1,58 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/res/components/my_button.dart';
-import 'package:todo_app/res/constants.dart';
 import 'package:todo_app/res/size_box_extension.dart';
-import 'package:todo_app/ui/task_detail_screen.dart';
 import '../controller/task_controller.dart';
-import '../model/task_model.dart';
 import '../res/colors.dart';
-import 'add_task_screen.dart';
+import '../res/constants.dart';
+import 'task_detail_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class CompletedTasks extends StatefulWidget {
+  const CompletedTasks({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<CompletedTasks> createState() => _CompletedTasksState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _CompletedTasksState extends State<CompletedTasks> {
   final TaskController taskController = Get.put(TaskController());
-
-  void _confirmCompleteTask(Task task) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm'),
-          content: const Text('Are you sure you want to mark this task as done?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                taskController.toggleTaskStatus(task);
-                Navigator.of(context).pop();
-              },
-              child: const Text('Confirm'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Pending Tasks')),
-      body: Column(
-        children: [
-          Container(
+      appBar: AppBar(title: const Text('Completed Tasks')),
+      body: Obx(() {
+        final completedTasks = taskController.taskList
+            .where((task) => task.isCompleted == 1)
+            .toList();
+        if (completedTasks.isEmpty) {
+          return const Center(
+            child: Text(
+              'No completed tasks yet',
+              style: TextStyle(fontSize: 18, color: MyColors.color),
+            ),
+          );
+        } else {
+          return Column(
+            children: [
+            Container(
             padding: padding,
             margin: padding,
             width: Get.width,
@@ -61,13 +43,13 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Pending:  ', style: cardTitleStyle),
+                Text('Completed:  ', style: cardTitleStyle),
                 Obx(() {
-                  final pendingTasks = taskController.taskList
-                      .where((task) => task.isCompleted == 0)
+                  final completedTasks = taskController.taskList
+                      .where((task) => task.isCompleted == 1)
                       .toList();
                   return Text(
-                    '${pendingTasks.length}',
+                    '${completedTasks.length}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -77,30 +59,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          Expanded(
-            child: Obx(() {
-              final pendingTasks = taskController.taskList
-                  .where((task) => task.isCompleted == 0)
-                  .toList();
-              if (pendingTasks.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'No Pending Tasks yet',
-                    style: TextStyle(fontSize: 18, color: MyColors.color),
-                  ),
-                );
-              } else {
-                return ListView.builder(
-                  itemCount: pendingTasks.length,
+              Expanded(
+                child: ListView.builder(
+                  itemCount: completedTasks.length,
                   itemBuilder: (context, index) {
-                    final task = pendingTasks[index];
+                    final task = completedTasks[index];
                     return InkWell(
                       onTap: () {
-                        Get.to(TaskDetailScreen(task: task, isPending: true,));
+                        Get.to(TaskDetailScreen(task: task, isPending: false,));
                       },
                       child: Card(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
+                        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                         elevation: 4,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -111,19 +80,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
-                                            const Text(
-                                              'Pending',
-                                              style: TextStyle(
+                                            Text(
+                                              'Completed',
+                                              style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -133,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               height: 15,
                                               width: 15,
                                               decoration: BoxDecoration(
-                                                  color: Colors.yellow.shade700,
+                                                  color: Colors.green.shade700,
                                                   shape: BoxShape.circle),
                                             )
                                           ],
@@ -176,31 +143,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   )
                                 ],
                               ),
-                              25.kH,
-                              MyButton(
-                                onTap: () => _confirmCompleteTask(task),
-                                text: 'Done',
-                                isLoading: false,
-                                padding: 10,
-                              )
                             ],
                           ),
                         ),
                       ),
                     );
                   },
-                );
-              }
-            }),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(const AddTaskScreen());
-        },
-        child: const Icon(Icons.add),
-      ),
+                ),
+              ),
+            ],
+          );
+        }
+      }),
     );
   }
 }

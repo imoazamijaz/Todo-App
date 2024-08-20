@@ -18,6 +18,9 @@ dependencies:
   sqflite: ^2.3.2
   path: ^1.9.0
   modal_bottom_sheet: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.0
+  salomon_bottom_bar: ^3.3.2
 
 dev_dependencies:
   flutter_test:

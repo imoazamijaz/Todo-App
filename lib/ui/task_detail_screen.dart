@@ -12,8 +12,9 @@ import 'home_screen.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   final Task task;
+  final bool isPending;
 
-  const TaskDetailScreen({super.key, required this.task});
+  const TaskDetailScreen({super.key, required this.task, required this.isPending});
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +92,7 @@ class TaskDetailScreen extends StatelessWidget {
             ),
             8.kH,
             Container(
-              height: Get.height * 0.15,
+              height: Get.height * 0.20,
               width: Get.width,
               padding: padding,
               decoration: decoration.copyWith(color: Colors.white),
@@ -106,10 +107,13 @@ class TaskDetailScreen extends StatelessWidget {
             ),
 
             const Spacer(),
-            MyButton(
-              onTap: showEditDraggableSheet,
-              text: 'Edit',
-              isLoading: false,
+            Visibility(
+              visible: isPending,
+              child: MyButton(
+                onTap: showEditDraggableSheet,
+                text: 'Edit',
+                isLoading: false,
+              ),
             ),
             16.kH,
             MyButton(

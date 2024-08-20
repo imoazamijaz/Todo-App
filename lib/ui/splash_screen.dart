@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:get/route_manager.dart';
 import 'package:todo_app/res/colors.dart';
+import 'package:todo_app/ui/bottom_nav.dart';
 
 import 'home_screen.dart';
 
@@ -46,12 +47,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       curve: Curves.easeInOut,
     ));
 
-
     _controller!.forward();
 
-    // Navigate to home after 5 seconds
     Timer(const Duration(seconds: 4), () {
-      Get.offAll(const HomeScreen());
+      Get.offAll(const BottomNav());
     });
   }
 
