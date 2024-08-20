@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:get/route_manager.dart';
 import 'package:todo_app/res/colors.dart';
-
-import 'home_screen.dart';
+import 'package:todo_app/res/size_box_extension.dart';
+import 'package:todo_app/ui/bottom_nav/bottom_nav.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -46,12 +46,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       curve: Curves.easeInOut,
     ));
 
-
     _controller!.forward();
 
-    // Navigate to home after 5 seconds
     Timer(const Duration(seconds: 4), () {
-      Get.offAll(const HomeScreen());
+      Get.offAll(const BottomNav());
     });
   }
 
@@ -64,49 +62,56 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: FadeTransition(
-          opacity: _fadeAnimation!,
-          child: ScaleTransition(
-            scale: _scaleAnimation!,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // App logo/icon with rotation effect and color change
-                RotationTransition(
-                  turns: Tween(begin: 0.0, end: 1.0).animate(_controller!),
-                  child: Icon(
-                    Icons.check_circle_outline,
-                    size: 100.0,
-                    color: _iconColor,
-                  ),
-                ),
-                const SizedBox(height: 20.0),
-                // App name
-                 const Text(
-                  "Todo Master",
-                  style: TextStyle(
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold,
-                    color: MyColors.color,
-                  ),
-                ),
-                const SizedBox(height: 10.0),
-                // Tagline with slide-in effect
-                SlideTransition(
-                  position: _slideAnimation!,
-                  child: const Text(
-                    "Stay Organized, Stay Productive",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: MyColors.color,
+      body: Column(
+        children: [
+          SizedBox(height: Get.height* 0.18,),
+          Image.asset('images/app_icon.png',height: Get.height * 0.12),
+          SizedBox(height: Get.height* 0.15),
+          Center(
+            child: FadeTransition(
+              opacity: _fadeAnimation!,
+              child: ScaleTransition(
+                scale: _scaleAnimation!,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // App logo/icon with rotation effect and color change
+                    RotationTransition(
+                      turns: Tween(begin: 0.0, end: 1.0).animate(_controller!),
+                      child: Icon(
+                        Icons.check_circle_outline,
+                        size: 100.0,
+                        color: _iconColor,
+                      ),
                     ),
-                  ),
+                    20.kH,
+                    // App name
+                     const Text(
+                      "Todo Master",
+                      style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                        color: MyColors.color,
+                      ),
+                    ),
+                    10.kH,
+                    // Tagline with slide-in effect
+                    SlideTransition(
+                      position: _slideAnimation!,
+                      child: const Text(
+                        "Stay Organized, Stay Productive",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: MyColors.color,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

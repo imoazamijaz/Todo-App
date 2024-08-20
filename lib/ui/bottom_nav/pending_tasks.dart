@@ -4,24 +4,52 @@ import 'package:todo_app/res/components/my_button.dart';
 import 'package:todo_app/res/constants.dart';
 import 'package:todo_app/res/size_box_extension.dart';
 import 'package:todo_app/ui/task_detail_screen.dart';
-import '../controller/task_controller.dart';
-import '../res/colors.dart';
-import 'add_task_screen.dart';
+import '../../controller/task_controller.dart';
+import '../../model/task_model.dart';
+import '../../res/colors.dart';
+import '../add_task_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class PendingTasks extends StatefulWidget {
+  const PendingTasks({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<PendingTasks> createState() => _PendingTasksState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _PendingTasksState extends State<PendingTasks> {
   final TaskController taskController = Get.put(TaskController());
+
+  void _confirmCompleteTask(Task task) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm'),
+          content: const Text('Are you sure you want to mark this task as done?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                taskController.toggleTaskStatus(task);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Task List')),
+      appBar: AppBar(title: const Text('Pending Tasks')),
       body: Column(
         children: [
           Container(
@@ -31,62 +59,41 @@ class _HomeScreenState extends State<HomeScreen> {
             height: Get.height * 0.08,
             decoration: decoration,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                30.kW,
-                Text('Pending:  ',style: cardTitleStyle),
+                Text('Pending Task Count: ', style: cardTitleStyle),
                 Obx(() {
                   final pendingTasks = taskController.taskList
                       .where((task) => task.isCompleted == 0)
                       .toList();
                   return Text(
                     '${pendingTasks.length}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
+                    style: cardTitleStyle,
                   );
                 }),
-                const Spacer(),
-                Container(
-                  height: 20,
-                  width: 1,
-                  color: Colors.white,
-                ),
-                const Spacer(),
-                Text('Completed:  ',style: cardTitleStyle),
-                Obx(() {
-                  final completedTasks = taskController.taskList
-                      .where((task) => task.isCompleted == 1)
-                      .toList();
-                  return Text(
-                    '${completedTasks.length}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  );
-                }),
-                30.kW,
               ],
             ),
           ),
           Expanded(
             child: Obx(() {
-              if (taskController.taskList.isEmpty) {
+              final pendingTasks = taskController.taskList
+                  .where((task) => task.isCompleted == 0)
+                  .toList();
+              if (pendingTasks.isEmpty) {
                 return const Center(
                   child: Text(
-                    'No tasks yet',
+                    'No Pending Tasks yet',
                     style: TextStyle(fontSize: 18, color: MyColors.color),
                   ),
                 );
               } else {
                 return ListView.builder(
-                  itemCount: taskController.taskList.length,
+                  itemCount: pendingTasks.length,
                   itemBuilder: (context, index) {
-                    final task = taskController.taskList[index];
+                    final task = pendingTasks[index];
                     return InkWell(
                       onTap: () {
-                        Get.to(TaskDetailScreen(task: task));
+                        Get.to(TaskDetailScreen(task: task, isPending: true,));
                       },
                       child: Card(
                         margin: const EdgeInsets.symmetric(
@@ -102,18 +109,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
-                                             Text(
-                                              task.isCompleted == 1 ? 'Completed' : 'Pending',
-                                              style: const TextStyle(
+                                            const Text(
+                                              'Pending',
+                                              style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -123,9 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               height: 15,
                                               width: 15,
                                               decoration: BoxDecoration(
-                                                  color: task.isCompleted == 1
-                                                      ? Colors.green.shade700
-                                                      : Colors.yellow.shade700,
+                                                  color: Colors.yellow.shade700,
                                                   shape: BoxShape.circle),
                                             )
                                           ],
@@ -162,17 +167,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ],
                                     ),
                                   ),
-                                  // IconButton(
-                                  //   icon: Icon(
-                                  //     task.isCompleted == 1
-                                  //         ? Icons.check_circle
-                                  //         : Icons.radio_button_unchecked,
-                                  //     color: task.isCompleted == 1
-                                  //         ? Colors.green
-                                  //         : Colors.grey,
-                                  //   ),
-                                  //   onPressed: () => taskController.toggleTaskStatus(task),
-                                  // ),
                                   const Icon(
                                     Icons.arrow_forward_ios_outlined,
                                     color: MyColors.color,
@@ -181,8 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               25.kH,
                               MyButton(
-                                onTap: () =>
-                                    taskController.toggleTaskStatus(task),
+                                onTap: () => _confirmCompleteTask(task),
                                 text: 'Done',
                                 isLoading: false,
                                 padding: 10,
